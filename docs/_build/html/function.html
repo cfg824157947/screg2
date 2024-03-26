@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RegNMF &mdash; project 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="test" href="api_reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">test</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RegNMF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#project.RegNMF"><code class="docutils literal notranslate"><span class="pre">RegNMF()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project.RegNMF_Matrix"><code class="docutils literal notranslate"><span class="pre">RegNMF_Matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">RegNMF</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/function.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-project">
+<span id="regnmf"></span><h1>RegNMF<a class="headerlink" href="#module-project" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="project.RegNMF">
+<span class="sig-prename descclassname"><span class="pre">project.</span></span><span class="sig-name descname"><span class="pre">RegNMF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rna_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atac_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fearture_cutprec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_added</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scReg_reduction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rna'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.RegNMF" title="Link to this definition">¶</a></dt>
+<dd><p>Perform Coupled Non-negative Matrix Factorization (NMF) on RNA and ATAC data.</p>
+<section id="parameters">
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>rna_data<span class="classifier">AnnData</span></dt><dd><p>Annotated data for RNA.</p>
+</dd>
+<dt>atac_data<span class="classifier">AnnData</span></dt><dd><p>Annotated data for ATAC.</p>
+</dd>
+<dt>batch_type<span class="classifier">str</span></dt><dd><p>Type of batch information in Meta_data.</p>
+</dd>
+<dt>Meta_data<span class="classifier">pd.DataFrame, optional</span></dt><dd><p>Metadata containing batch information. Default is None.</p>
+</dd>
+<dt>K<span class="classifier">int, optional</span></dt><dd><p>Number of components for NMF. Default is 100.</p>
+</dd>
+<dt>feature_cutprec<span class="classifier">float, optional</span></dt><dd><p>Feature cutoff precision. Default is 0.01.</p>
+</dd>
+<dt>key_added<span class="classifier">str, optional</span></dt><dd><p>Key to store results in rna_data.obsm. Default is “scReg_reduction”.</p>
+</dd>
+<dt>maxiter<span class="classifier">int, optional</span></dt><dd><p>Maximum number of iterations for NMF. Default is 40.</p>
+</dd>
+<dt>copy<span class="classifier">str, optional</span></dt><dd><p>Specify ‘rna’ or ‘atac’ to choose which data to copy results into. Default is ‘rna’.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>AnnData</dt><dd><p>Annotated data with NMF results added.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="project.RegNMF_Matrix">
+<span class="sig-prename descclassname"><span class="pre">project.</span></span><span class="sig-name descname"><span class="pre">RegNMF_Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutprec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.RegNMF_Matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Perform Coupled Non-negative Matrix Factorization (NMF) on input matrices.</p>
+<section id="id1">
+<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>E<span class="classifier">csr_matrix</span></dt><dd><p>Sparse matrix for RNA data.</p>
+</dd>
+<dt>O<span class="classifier">csr_matrix</span></dt><dd><p>Sparse matrix for ATAC data.</p>
+</dd>
+<dt>Meta_data<span class="classifier">pd.DataFrame</span></dt><dd><p>Metadata containing batch information.</p>
+</dd>
+<dt>batch_type<span class="classifier">str</span></dt><dd><p>Type of batch information in Meta_data.</p>
+</dd>
+<dt>K<span class="classifier">int, optional</span></dt><dd><p>Number of components for NMF. Default is 100.</p>
+</dd>
+<dt>feature_cutprec<span class="classifier">float, optional</span></dt><dd><p>Feature cutoff precision. Default is 0.01.</p>
+</dd>
+<dt>maxiter<span class="classifier">int, optional</span></dt><dd><p>Maximum number of iterations for NMF. Default is 40.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h2>Returns:<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>dict</dt><dd><p>Dictionary containing NMF results.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api_reference.html" class="btn btn-neutral float-left" title="test" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, cham.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
