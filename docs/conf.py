@@ -11,7 +11,7 @@ import sphinx_rtd_theme
 
 sys.path.insert(0, os.path.abspath('../'))
 
-project = 'project'
+project = 'screg2'
 copyright = '2024, cham'
 author = 'cham'
 release = '1.0'

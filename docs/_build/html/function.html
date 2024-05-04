@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RegNMF &mdash; project 1.0 documentation</title>
+  <title>RegNMF &mdash; screg2 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -31,7 +31,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            project
+            screg2
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,8 +47,8 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">test</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">RegNMF</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#project.RegNMF"><code class="docutils literal notranslate"><span class="pre">RegNMF()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#project.RegNMF_Matrix"><code class="docutils literal notranslate"><span class="pre">RegNMF_Matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF"><code class="docutils literal notranslate"><span class="pre">RegNMF()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF_Matrix"><code class="docutils literal notranslate"><span class="pre">RegNMF_Matrix()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -59,7 +59,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">project</a>
+          <a href="index.html">screg2</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -77,11 +77,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-project">
-<span id="regnmf"></span><h1>RegNMF<a class="headerlink" href="#module-project" title="Link to this heading">¶</a></h1>
+  <section id="module-screg2">
+<span id="regnmf"></span><h1>RegNMF<a class="headerlink" href="#module-screg2" title="Link to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="project.RegNMF">
-<span class="sig-prename descclassname"><span class="pre">project.</span></span><span class="sig-name descname"><span class="pre">RegNMF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rna_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atac_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fearture_cutprec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_added</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scReg_reduction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rna'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.RegNMF" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="screg2.RegNMF">
+<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rna_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atac_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutperc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_added</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scReg_reduction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rna'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF" title="Link to this definition">¶</a></dt>
 <dd><p>Perform Coupled Non-negative Matrix Factorization (NMF) on RNA and ATAC data.</p>
 <section id="parameters">
 <h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
@@ -96,7 +96,7 @@
 </dd>
 <dt>K<span class="classifier">int, optional</span></dt><dd><p>Number of components for NMF. Default is 100.</p>
 </dd>
-<dt>feature_cutprec<span class="classifier">float, optional</span></dt><dd><p>Feature cutoff precision. Default is 0.01.</p>
+<dt>feature_cutperc<span class="classifier">float, optional</span></dt><dd><p>Feature cutoff precision. Default is 0.01.</p>
 </dd>
 <dt>key_added<span class="classifier">str, optional</span></dt><dd><p>Key to store results in rna_data.obsm. Default is “scReg_reduction”.</p>
 </dd>
@@ -116,8 +116,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="project.RegNMF_Matrix">
-<span class="sig-prename descclassname"><span class="pre">project.</span></span><span class="sig-name descname"><span class="pre">RegNMF_Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutprec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#project.RegNMF_Matrix" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="screg2.RegNMF_Matrix">
+<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF_Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutperc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF_Matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Perform Coupled Non-negative Matrix Factorization (NMF) on input matrices.</p>
 <section id="id1">
 <h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
@@ -132,7 +132,7 @@
 </dd>
 <dt>K<span class="classifier">int, optional</span></dt><dd><p>Number of components for NMF. Default is 100.</p>
 </dd>
-<dt>feature_cutprec<span class="classifier">float, optional</span></dt><dd><p>Feature cutoff precision. Default is 0.01.</p>
+<dt>feature_cutperc<span class="classifier">float, optional</span></dt><dd><p>Feature cutoff precision. Default is 0.01.</p>
 </dd>
 <dt>maxiter<span class="classifier">int, optional</span></dt><dd><p>Maximum number of iterations for NMF. Default is 40.</p>
 </dd>

@@ -1,4 +1,5 @@
 import numpy as np
+import time
 import pandas as pd
 import scanpy as sc
 from . import core
@@ -8,7 +9,7 @@ import os
 from anndata import AnnData
 from scipy import sparse
 
-def sparse_row_median(csr_mat):
+def sparse_row_median(X):
     """
     Compute the median of each row in a sparse CSR matrix.
 
@@ -18,20 +19,59 @@ def sparse_row_median(csr_mat):
     Returns:
     - numpy.ndarray: Array containing medians of each row.
     """
-    indices = np.random.permutation(csr_mat.shape[1])
-    medians = np.zeros(csr_mat.shape[0])
-    mb_size = mb_size = int(2 ** np.log10(csr_mat.shape[1]) * 128)# Adjust this according to your preference
-    n_batch = (csr_mat.shape[1] + mb_size - 1) // mb_size
-    for i in range(n_batch):
-        print("n_batch: ", n_batch)
-        start_idx = i * mb_size
-        end_idx = min((i + 1) * mb_size, csr_mat.shape[1])
-        mb_indices = indices[start_idx:end_idx]
-        row_data = np.asarray(csr_mat[:,mb_indices].todence())
-        medians[mb_indices] = np.nanmedian(row_data, axis=0) + np.finfo(np.float64).eps 
-    return medians
+    
+    X = X.tocoo()
+    df = pd.DataFrame({'Value': X.data, 'Group': X.row})
+    medians = df.groupby('Group')['Value'].median()
+    return medians.values
 
-def RegNMF(rna_data, atac_data, batch_type, Meta_data=None, K=100, feature_cutperc=0.01, key_added="scReg_reduction", maxiter=40, copy='rna'):
+def normalize_scaling_default(X):
+    b = sparse_row_median(X) + np.finfo(np.float64).eps  # Compute median along each column, ignoring NaN values
+    scaled_X = X.T.multiply(1/b * np.mean(b)).T  # Normalize and scale by mean
+    return (scaled_X)  # Convert back to sparse matrix format if needed
+
+def tfidf(X):
+    """
+    Compute tfidf for matrix X (cell X gene)
+    https://github.com/stuart-lab/signac/blob/HEAD/R/preprocessing.R
+    """
+    tf = X / np.log(1 + X.sum(axis = 1))
+    idf = np.log(1 + (X.shape[0]/(1+X.sum(axis = 0))))
+    #idf[idf == np.inf] = 0
+    return tf.multiply(idf.A1)
+    
+
+def RegNMF_h5(h5_file, barcodes=None):
+    """
+    Perform Coupled Non-negative Matrix Factorization (NMF) on RNA and ATAC data from h5 file. 
+
+    Parameters:
+    -----------
+    h5_file : str
+        Single cell multiome h5 file
+    barcodes : str
+        The barcodes of cells that you want use
+    Returns:
+    --------
+    AnnData
+        Annotated data with NMF results added and normalized layer.
+    """
+    adata = sc.read_10x_h5(h5_file, gex_only=False)
+    if type(barcodes) != type(None):
+        adata = adata[adata.obs_names.isin(barcodes),:]
+    sample = adata.obs_names.str.split('-').str[1]
+    adata.obs = pd.DataFrame(sample, index=adata.obs_names, columns=["sample"])
+    rna_adata = adata[:,adata.var['feature_types']=='Gene Expression']
+    atac_adata = adata[:,adata.var['fecture_types']=='Peaks']
+    rna_adata, atac_adata = RegNMF(rna_data=rna_adata,atac_data=atac_adata, batch_type=sample)
+    adata.layers['norm'] = adata.X
+    adata.layers['norm'][:,adata.var['feature_types']=='Peaks'].data = atac_adata.X.tocsr().data
+    adata.layers['norm'][:,adata.var['feature_types']=='Gene Expression'].data = rna_adata.X.tocsr().data
+    adata.obsm['scReg_reduction'] = rna_adata.obsm['scReg_reduction']
+    return adata
+    
+
+def RegNMF(rna_data, atac_data, batch_type, Meta_data=None, K=100, feature_cutperc=0.01, key_added="scReg_reduction", maxiter=100, copy='rna', TFIDF=False, normalize=False):
     """
     Perform Coupled Non-negative Matrix Factorization (NMF) on RNA and ATAC data.
 
@@ -62,20 +102,29 @@ def RegNMF(rna_data, atac_data, batch_type, Meta_data=None, K=100, feature_cutpe
         Annotated data with NMF results added.
     """
     if isinstance(rna_data,AnnData) and isinstance(atac_data,AnnData):
+        if TFIDF:
+            atac_data.layers['norm'] = tfidf(atac_data.X).tocsr()
+            atac_data.X = atac_data.layers['norm']
+        if normalize:
+            rna_data.layers['norm'] = normalize_scaling_default(rna_data.X).tocsr()
+            rna_data.X = atac_data.layers['norm']
+            atac_data.layers['norm'] = normalize_scaling_default(atac_data.X).tocsr()
+            atac_data.X = atac_data.layers['norm']
+
         if Meta_data is None:
-            scReg_reduction = RegNMF_Matrix(E=rna_data.X, O=atac_data.X, Meta_data=rna_data.obs, batch_type=batch_type, K=K, feature_cutperc=feature_cutperc, maxiter=maxiter)
+            scReg_reduction = RegNMF_Matrix(E=rna_data.X, O=atac_data.X, Meta_data=rna_data.obs, batch_type=batch_type, K=K, feature_cutperc=feature_cutperc, maxiter=maxiter, TFIDF=TFIDF, normalize=normalize)
         else:
             scReg_reduction = RegNMF_Matrix(E=rna_data.X, O=atac_data.X, Meta_data=Meta_data, batch_type=batch_type, K=K, feature_cutperc=feature_cutperc, maxiter=maxiter)
 
         if copy=='rna':
-            rna_data.obsm[key_added] = scReg_reduction['H']
+            rna_data.obsm[key_added] = scReg_reduction['H'].T
     
         else:
-            rna_data.obsm[key_added] = scReg_reduction['H']
-        return rna_data
+            rna_data.obsm[key_added] = scReg_reduction['H'].T
+        return rna_data, atac_data
 
 
-def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxiter=40):
+def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxiter=40,TFIDF=True,nomalize=True):
 
 
     """
@@ -103,11 +152,12 @@ def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxi
     dict
         Dictionary containing NMF results.
     """
-
-    E = csr_matrix(E)
-    O = csr_matrix(O)
+    E = csr_matrix(E).astype(float)
+    O = csr_matrix(O).astype(float)
     print("E_matrix: ", type(E))
     print("O_matrix: ", type(O))
+
+
 
     numCut = feature_cutperc * E.shape[0]
     expressed_cellN = np.array((E != 0).sum(axis=0)).squeeze()
@@ -116,7 +166,7 @@ def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxi
     print("E shape: ", E.shape)
     print("numCut : ", numCut)
     print("geneN: ", expressed_cellN)
-    print("sum: ",(expressed_cellN > numCut).sum() )
+    print("sum: ",(expressed_cellN > numCut).sum())
 
     expressed_indices = np.where(expressed_cellN > numCut)[0]
     open_indices = np.where(open_cellN > numCut)[0]
@@ -127,19 +177,33 @@ def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxi
     print("O shape after filtering: ", O.shape)
 
 
+    #E = E.tocsc()
+    #O = O.tocsc()
+    #print("E_matrix: ", type(E))
+    #print("O_matrix: ", type(O))
+
+    start_t = time.time()
     W2, H2 = core.perform_nmf(E.T, K)
     W2 = W2 / np.sqrt((H2 * H2).sum(axis=1))
 
     W1, H1 = core.perform_nmf(O.T, K)
     W1 = W1 / np.sqrt((H1 * H1).sum(axis=1))
 
-
+    end_t = time.time()
+    exetime = end_t- start_t
+    
+    print(f"NMF:  {exetime} sec")
+    start_t = time.time()
     lambda1, lambda2 = core.defaultpar_CoupledNMF_default(PeakO=O,
                                                     W1 = W1, X=E,
                                                     W2 = W2, beta=1, arfa=1, withoutRE=True)
 
 
-
+    print("lambda1: ", lambda1)
+    end_t = time.time()
+    exetime = end_t- start_t
+    
+    print(f"defaultpar_CoupledNMF_default:  {exetime} sec")
     batch_list = Meta_data[batch_type].unique()
     W20 = np.random.rand(E.shape[1], K)
     W10 = np.random.rand(O.shape[1], K)
@@ -151,7 +215,13 @@ def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxi
         H0 = np.append(H0,(Meta_data[batch_type] == i).values.astype('int').reshape(1,-1), axis=0)
 
 
-    ans = core.nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO=O.T, X=E.T, lambda1=lambda1, W10=W10, W20=W20, H0=H0, K=100, maxiter=maxiter)
+    start_t = time.time()
+    ans = core.nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO=O.T, X=E.T, lambda1=lambda1, W10=W10, W20=W20, H0=H0, K=K, maxiter=maxiter)
+    end_t = time.time()
+    exetime = end_t- start_t
+    
+    print(f"CoupledNMF:  {exetime} sec")
+    ans['H'] = ans['H'][:K,:]
     return ans
 
 

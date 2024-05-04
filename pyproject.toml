@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scReg2"
-version = "0.1.0"
+version = "0.0.99"
 description = "make_scReg2 project"
 authors = ["Cham <fchang@clemson.edu>"]
 readme = "README.md"

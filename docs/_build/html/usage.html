@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage &mdash; project 1.0 documentation</title>
+  <title>Usage &mdash; screg2 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            project
+            screg2
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,7 +59,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">project</a>
+          <a href="index.html">screg2</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -84,12 +84,18 @@
 <p>Load data as anndata (h5ad)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">import</span> <span class="nn">project</span> <span class="k">as</span> <span class="nn">scReg</span>
+<span class="kn">import</span> <span class="nn">screg2</span>
 
 <span class="n">adata</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read_10x_mtx</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/data2/duren_lab/palmetto/cham/toyData/filtered_feature_bc_matrix/&#39;</span><span class="p">,</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">gex_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">rna_adata</span> <span class="o">=</span> <span class="n">adata</span><span class="p">[:,</span><span class="n">toyData</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;feature_types&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Gene Expression&#39;</span><span class="p">]</span>
+<span class="n">atac_adata</span> <span class="o">=</span> <span class="n">adata</span><span class="p">[:,</span><span class="n">toyData</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;feature_types&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Peaks&#39;</span><span class="p">]</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">normalize_total</span><span class="p">(</span><span class="n">rna_adata</span><span class="p">)</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">normalize_total</span><span class="p">(</span><span class="n">atac_adata</span><span class="p">)</span>
+
+
 
 <span class="c1"># This part will return redaction to adata_rna</span>
-<span class="n">adata_rna</span> <span class="o">=</span> <span class="n">scReg</span><span class="o">.</span><span class="n">RegNMF</span><span class="p">(</span><span class="n">E</span> <span class="o">=</span> <span class="n">adata</span><span class="p">[:,</span><span class="n">toyData</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;feature_types&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Gene Expression&#39;</span><span class="p">],</span> <span class="n">O</span> <span class="o">=</span> <span class="n">adata</span><span class="p">[:,</span><span class="n">toyData</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;feature_types&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Peaks&#39;</span><span class="p">],</span> <span class="n">batch_type</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span><span class="p">)</span>
+<span class="n">adata_rna</span> <span class="o">=</span> <span class="n">screg2</span><span class="o">.</span><span class="n">RegNMF</span><span class="p">(</span><span class="n">E</span> <span class="o">=</span> <span class="n">rna_adata</span><span class="p">,</span> <span class="n">O</span> <span class="o">=</span><span class="n">atac_adata</span><span class="p">,</span> <span class="n">batch_type</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
