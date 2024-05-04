@@ -2,7 +2,7 @@ RegNMF
 =========================================================
 
 
-.. automodule:: project
+.. automodule:: screg2
    :members:
    :undoc-members:
    :show-inheritance:

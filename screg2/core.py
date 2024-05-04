@@ -1,4 +1,5 @@
 from sklearn.decomposition import NMF
+import time
 import torch
 import torch.sparse as sparse
 import numpy as np
@@ -22,7 +23,7 @@ def defaultpar_CoupledNMF_default(PeakO, W1, X, W2, Reg = None, W3 = None, beta=
         lambda2 = arfa * (PeakO @ W1).mean() / (W3 @ Reg.T).mean()
     return lambda1, lambda2
 
-def perform_nmf(data, n_components, max_iter=200):
+def perform_nmf(data, n_components, max_iter=30):
     """
     Perform Non-negative Matrix Factorization (NMF) on the given data.
 
@@ -72,9 +73,6 @@ def nmf_cluster_joint_cross_domain(PeakO, X, lambda1, W10, W20, H0, Reg=None, K=
                 if iter < maxiter:
                     if (dnorm0 - dnorm) <= tolfun or (dnorm0 - dnorm) <= 0:
                         print("dnorm0-dnorm", dnorm0 - dnorm, "is small")
-                        break
-                    elif iter == maxiter:
-                        break
                     dnorm0 = dnorm
                 print("iteration", iter)
 
@@ -138,9 +136,73 @@ def nmf_cluster_joint_cross_domain(PeakO, X, lambda1, W10, W20, H0, Reg=None, K=
 
             return {'W1': W1, 'W2': W2, 'W3': W3, 'H': H}
 
+# PeakO and X is csr sparse matrix
+def nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO, X, lambda1, W10, W20, H0, Reg=None, K=100, maxiter=100, lambda2=None, W30=None, c1=None, c2=None, Reg_w=None, core=8, withoutRE=True):
+    """
+    Perform Non-negative Matrix Factorization (NMF) on joint cross-domain data using PyTorch.
+
+    Parameters:
+    - PeakO (csc_matrix): Sparse matrix representing data from domain 1.
+    - X (csc_matrix): Sparse matrix representing data from domain 2.
+    - lambda1 (float): Regularization parameter.
+    - W10 (numpy.ndarray): Initial factor matrix for domain 1.
+    - W20 (numpy.ndarray): Initial factor matrix for domain 2.
+    - H0 (numpy.ndarray): Initial coefficient matrix.
+    - Reg (callable): Regularization function (optional).
+    - K (int): Number of components for NMF.
+    - maxiter (int): Maximum number of iterations.
+    - lambda2 (float): Optional regularization parameter for additional regularization.
+    - W30 (numpy.ndarray): Optional additional factor matrix.
+    - c1 (float): Optional constant.
+    - c2 (float): Optional constant.
+    - Reg_w (callable): Optional regularization function for factor matrices.
+    - core (int): Number of CPU cores to use.
+    - withoutRE (bool): Flag indicating whether to perform with or without regularization.
+
+    Returns:
+    - dict: Dictionary containing factor matrices W1, W2, and coefficient matrix H.
+    """
+    
+    if withoutRE:
+       # dnorm0 = ((PeakO - torch.matmul(W10, H0)).pow(2).sum() + lambda1 * (X - torch.matmul(W20, H0)).pow(2).sum()).item()
+        indices = np.random.permutation(PeakO.shape[1])
+        mb_size = int(2 ** np.log10(PeakO.shape[1]) * 128)# Adjust this according to your preference
+        n_batch = (PeakO.shape[1] + mb_size - 1) // mb_size
+        batch = np.array(range(PeakO.shape[1])) % n_batch
+        print(n_batch)
+        for iter in range(maxiter):
+            start_t = time.time()
+            for i in range(n_batch):
+                numer = (PeakO[:,indices[batch==i]].T @ W10).T  + lambda1 * (X[:,indices[batch==i]].T @ W20).T
+                H0[:, indices[batch==i]]*= numer / ((W10.T @ W10 + lambda1 * W20.T @ W20) @ H0[:,indices[batch==i]] + np.finfo(np.float64).eps)
+                HH = H0[:,indices[batch==i]] @ H0[:,indices[batch==i]].T
+                numer = PeakO[:,indices[batch==i]] @ H0[:,indices[batch==i]].T
+                W10 = np.multiply(W10, numer / (W10 @ HH + np.finfo(np.float64).eps))
+                numer = X[:,indices[batch==i]] @ H0[:,indices[batch==i]].T
+                W20 = np.multiply(W20, numer / (W20 @ HH + np.finfo(np.float64).eps))
+
+            end_t = time.time()
+            exetime = end_t- start_t
+            print(f"i: {iter}, CoupledNMF:  {exetime} sec")
+
+
+        #if iter % 20 == 0:
+    #                dnorm = ((PeakO - torch.matmul(W10, H0)).pow(2).sum() + lambda1 * (X - torch.matmul(W20, H0)).pow(2).sum()).item()
+            #   if iter < maxiter:
+            #      if (dnorm0 - dnorm) <= tolfun or (dnorm0 - dnorm) <= 0:
+            #         print("dnorm0-dnorm", dnorm0 - dnorm, "is small")
+            #        break
+                #   elif iter == maxiter:
+                #      break
+                # dnorm0 = dnorm
+            # print("iteration", iter)
+        return {'W1': W10, 'W2': W20, 'H': H0}
+
+
+
 
 # PeakO and X is csr sparse matrix
-def nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO, X, lambda1, W10, W20, H0, Reg=None, K=100, maxiter=40, lambda2=None, W30=None, c1=None, c2=None, Reg_w=None, core=8, withoutRE=True):
+def old_nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO, X, lambda1, W10, W20, H0, Reg=None, K=100, maxiter=40, lambda2=None, W30=None, c1=None, c2=None, Reg_w=None, core=8, withoutRE=True):
     """
     Perform Non-negative Matrix Factorization (NMF) on joint cross-domain data using PyTorch.
 
@@ -175,6 +237,7 @@ def nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO, X, lambda1, W10, W20, 
     if withoutRE:
         W10 = torch.tensor(W10, device=device)
         W20 = torch.tensor(W20, device=device)
+
         H0 = torch.tensor(H0, device=device)
         mb_size = mb_size = int(2 ** np.log10(PeakO.shape[1]) * 128)# Adjust this according to your preference
         n_batch = (PeakO.shape[1] + mb_size - 1) // mb_size
@@ -192,7 +255,6 @@ def nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO, X, lambda1, W10, W20, 
                 Xp = torch.tensor(X[:, mb_indices].toarray())
 
                 print("after trans", n_batch)
-
 
                 numer = torch.matmul(W10.t(), PeakOp) + lambda1 * torch.matmul(W20.t(), Xp)
 
@@ -215,4 +277,133 @@ def nmf_cluster_joint_cross_domain_torch_sparse_mb(PeakO, X, lambda1, W10, W20, 
                # print("iteration", iter)
 
         return {'W1': W10.cpu().numpy(), 'W2': W20.cpu().numpy(), 'H': H0.cpu().numpy()}
+
+
+
+
+
+def nmf_torch_sparse_mb(X, K=100, maxiter=40):
+    """
+    Perform Non-negative Matrix Factorization (NMF) on joint cross-domain data using PyTorch.
+
+    Parameters:
+    - X (csr_matrix): Sparse matrix representing data from domain 2.
+    - W20 (numpy.ndarray): Initial factor matrix for domain 2.
+    - H0 (numpy.ndarray): Initial coefficient matrix.
+    - K (int): Number of components for NMF.
+    - maxiter (int): Maximum number of iterations.
+    - core (int): Number of CPU cores to use.
+
+    Returns:
+    - dict: Dictionary containing factor matrices W1, W2, and coefficient matrix H.
+    """
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    tolfun = 1e-6
+    dnorm, dnorm0 = 0, 0
+
+    indices = torch.randperm(X.shape[1])
+
+
+    W20 = np.random.rand(X.shape[0],K)
+    W20 = torch.tensor(W20, device=device)
+    #W20 = W20.double()
+
+    H0 = np.random.rand(K,X.shape[1])
+    H0 = torch.tensor(H0, device=device)
+    mb_size = mb_size = int(2 ** np.log10(X.shape[1]) * 128)# Adjust this according to your preference
+    n_batch = (X.shape[1] + mb_size - 1) // mb_size
+
+    # dnorm0 = ((PeakO - torch.matmul(W10, H0)).pow(2).sum() + lambda1 * (X - torch.matmul(W20, H0)).pow(2).sum()).item()
+
+    for iter in range(maxiter):
+        for i in range(n_batch):
+            print(i)
+            start_time = time.time()
+            
+            start_idx = i * mb_size
+            end_idx = min((i + 1) * mb_size, X.shape[1])
+            mb_indices = indices[start_idx:end_idx]
+            end_time = time.time()
+            exetime = end_time - start_time
+            print(f"Time minibatch:  {exetime} sec")
+
+            start_time = time.time()
+            Xp = X[:, mb_indices].toarray()
+            end_time = time.time()
+            exetime = end_time - start_time
+            print(f"Trans to dense:  {exetime} sec")
+            
+            start_time = time.time()
+            Xp = torch.tensor(Xp)
+            #Xp = torch.tensor(X[:, mb_indices].toarray())
+            Xp = torch.tensor(Xp, device=device)
+            end_time = time.time()
+            exetime = end_time - start_time
+            print(f"Put on device:  {exetime} sec")
+
+
+
+            numer = torch.matmul(W20.t(), Xp)
+
+            H0[:, mb_indices] *= numer / (torch.matmul(torch.matmul(W20.t(), W20), H0[:, mb_indices]) + torch.finfo(torch.float64).eps)
+            HH = torch.matmul(H0[:, mb_indices], H0[:, mb_indices].t())
+
+            numer = torch.matmul(Xp, H0[:, mb_indices].t())
+            W20 *= (numer / (torch.matmul(W20, HH) + torch.finfo(torch.float64).eps))
+        #if iter % 20 == 0:
+#                dnorm = ((PeakO - torch.matmul(W10, H0)).pow(2).sum() + lambda1 * (X - torch.matmul(W20, H0)).pow(2).sum()).item()
+            #   if iter < maxiter:
+            #      if (dnorm0 - dnorm) <= tolfun or (dnorm0 - dnorm) <= 0:
+            #         print("dnorm0-dnorm", dnorm0 - dnorm, "is small")
+            #        break
+                #   elif iter == maxiter:
+                #      break
+                # dnorm0 = dnorm
+            # print("iteration", iter)
+
+    return {'W2': W20.cpu().numpy(), 'H': H0.cpu().numpy()}
+
+def nmf_numpy(X, K=100, maxiter=100):
+    """
+    Perform Non-negative Matrix Factorization (NMF) on joint cross-domain data using PyTorch.
+
+    Parameters:
+    - X (csr_matrix): Sparse matrix representing data from domain 2.
+    - W20 (numpy.ndarray): Initial factor matrix for domain 2.
+    - H0 (numpy.ndarray): Initial coefficient matrix.
+    - K (int): Number of components for NMF.
+    - maxiter (int): Maximum number of iterations.
+    - core (int): Number of CPU cores to use.
+
+    Returns:
+    - dict: Dictionary containing factor matrices W1, W2, and coefficient matrix H.
+    """
+    
+    W20 = np.random.rand(X.shape[0],K)
+    H0 = np.random.rand(K,X.shape[1])
+
+    # dnorm0 = ((PeakO - torch.matmul(W10, H0)).pow(2).sum() + lambda1 * (X - torch.matmul(W20, H0)).pow(2).sum()).item()
+
+    for iter in range(maxiter):
+
+        numer = (X.T @ W20).T
+
+        H0 *= numer / ((W20.T @ W20) @ H0 + np.finfo(np.float64).eps)
+        HH = H0 @ H0.T
+
+        numer = X @ H0.T
+        W20 *= numer / (W20 @ HH + np.finfo(np.float64).eps)
+    #if iter % 20 == 0:
+#                dnorm = ((PeakO - torch.matmul(W10, H0)).pow(2).sum() + lambda1 * (X - torch.matmul(W20, H0)).pow(2).sum()).item()
+        #   if iter < maxiter:
+        #      if (dnorm0 - dnorm) <= tolfun or (dnorm0 - dnorm) <= 0:
+        #         print("dnorm0-dnorm", dnorm0 - dnorm, "is small")
+        #        break
+            #   elif iter == maxiter:
+            #      break
+            # dnorm0 = dnorm
+        # print("iteration", iter)
+
+    return {'W2': W20, 'H': H0}
 
