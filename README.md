@@ -53,14 +53,10 @@ array([[4.13353097e-14, 1.08500913e-10, 3.27313772e-11, ...,
         0.00000000e+00, 0.00000000e+00, 0.00000000e+00]])
 ```
 
-::: warning
-::: title
-Warning
-:::
+## Warning
 
 If you do not have the meta data of cells for their sample infomation
 the nex code might help you
-:::
 
 ``` python
 rna_adata.obs['sample'] = adata.obs_names.str.split("-").str[1]
