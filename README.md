@@ -1,3 +1,13 @@
+# BETA
+This package still in beta, please feel free to e-mail me for any question about the package and usage.
+
+email: fchang[at]clemson.edu
+
+# Install
+``` bash
+pip install screg2
+```
+
 # Usage
 
 ## Load data form h5ad file
