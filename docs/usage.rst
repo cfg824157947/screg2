@@ -71,6 +71,7 @@ Load data from h5 file
 
 Create RNA and ATAC Anndata object 
 -------------------------------------
+
   #start filtering cell by rna
   rna_adata= adata[:,adata.var['feature_types']=='Gene Expression']
   atac_adata = adata[:,toyData.var['feature_types']=='Peaks']
