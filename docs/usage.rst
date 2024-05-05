@@ -4,7 +4,8 @@ Usage
 Load data form h5ad file
 ____________________________
 If you have 2 anndata object that already finished scaling, normalizing,... You can just simply use ``screg2.RegNMF()`` to integrate rna and atac data, with batch remove. 
-``screg2.RegNMF()`` will return the rna anndata object with ``scReg_reduction`` in it ``rna_adata.obsm``
+``screg2.RegNMF()`` will return the rna anndata object with ``scReg_reduction`` in it ``rna_adata.obsm`` 
+
 .. code-block:: python
 
   import pandas as pd
@@ -20,6 +21,7 @@ If you have 2 anndata object that already finished scaling, normalizing,... You 
 
 
 ``screg2.RegNMF()`` will return the rna anndata object with ``scReg_reduction`` in it ``rna_adata.obsm``
+
 .. code-block:: python
                 
   rna_adata.obsm['scReg_reduction']
