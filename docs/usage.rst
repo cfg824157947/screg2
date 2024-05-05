@@ -6,6 +6,7 @@ ____________________________
 If you have 2 anndata object that already finished scaling, normalizing,... You can just simply use ``screg2.RegNMF()`` to integrate rna and atac data, with batch remove. 
 ``screg2.RegNMF()`` will return the rna anndata object with ``scReg_reduction`` in it ``rna_adata.obsm``
 .. code-block:: python
+
   import pandas as pd
   import numpy as np
   import scanpy as sc
@@ -20,8 +21,10 @@ If you have 2 anndata object that already finished scaling, normalizing,... You 
 
 ``screg2.RegNMF()`` will return the rna anndata object with ``scReg_reduction`` in it ``rna_adata.obsm``
 .. code-block:: python
+                
   rna_adata.obsm['scReg_reduction']
 .. code-block:: python
+                
   array([[4.13353097e-14, 1.08500913e-10, 3.27313772e-11, ...,
           0.00000000e+00, 0.00000000e+00, 0.00000000e+00],
         [2.09097071e-14, 1.96949657e-16, 1.67404740e-11, ...,
@@ -44,6 +47,7 @@ If you have 2 anndata object that already finished scaling, normalizing,... You 
 Clustering and Umap
 ____________________________
 .. code-block:: python
+
   sc.pp.neighbors(rna_adata, use_rep='scReg_reduction', key_added='scReg_neighbors', n_neighbors=40)
   sc.tl.leiden(rna_adata, neighbors_key='scReg_neighbors', key_added='scReg_leiden')
   sc.tl.umap(rna_adata, neighbors_key='scReg_neighbors')
