@@ -124,7 +124,7 @@ def RegNMF(rna_data, atac_data, batch_type, Meta_data=None, K=100, feature_cutpe
         return rna_data, atac_data
 
 
-def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxiter=40,TFIDF=True,nomalize=True):
+def RegNMF_Matrix(E, O, Meta_data, batch_type, K=100, feature_cutperc=0.01, maxiter=40,TFIDF=True,normalize=True):
 
 
     """
