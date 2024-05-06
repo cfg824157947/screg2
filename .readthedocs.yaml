@@ -15,4 +15,3 @@ python:
     extra_requirements:
     - doc
     - sphinx
-    - sphinx_rtd_theme
