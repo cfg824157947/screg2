@@ -45,6 +45,7 @@ If you have 2 anndata object that already finished scaling, normalizing,... You 
   If you do not have the meta data of cells for their sample infomation the nex code might help you
 
 .. code-block:: python
+
   rna_adata.obs['sample'] = adata.obs_names.str.split("-").str[1]
 
 Clustering and Umap
