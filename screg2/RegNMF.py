@@ -51,6 +51,7 @@ def RegNMF_h5(h5_file, barcodes=None):
         Single cell multiome h5 file
     barcodes : str
         The barcodes of cells that you want use
+
     Returns:
     --------
     AnnData
