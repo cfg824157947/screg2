@@ -10,8 +10,10 @@ sphinx:
   configuration: docs/conf.py
 python:
   install:
+  - requirements.txt
   - method: pip
     path: .
     extra_requirements:
     - doc
     - sphinx
+    - sphinx_rtd_theme
