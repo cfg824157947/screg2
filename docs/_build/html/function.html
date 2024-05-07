@@ -1,44 +1,92 @@
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>RegNMF &#8212; screg2 1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=f2a433a1"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RegNMF &mdash; screg2 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="test" href="api_reference.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
+    <link rel="prev" title="test" href="api_reference.html" /> 
+</head>
 
-  
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
+          
+          <a href="index.html" class="icon icon-home">
+            screg2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">test</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RegNMF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF"><code class="docutils literal notranslate"><span class="pre">RegNMF()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF_Matrix"><code class="docutils literal notranslate"><span class="pre">RegNMF_Matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF_h5"><code class="docutils literal notranslate"><span class="pre">RegNMF_h5()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#screg2.tfidf"><code class="docutils literal notranslate"><span class="pre">tfidf()</span></code></a></li>
+</ul>
+</li>
+</ul>
 
-          <div class="body" role="main">
-            
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">screg2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">RegNMF</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/function.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="module-screg2">
-<span id="regnmf"></span><h1>RegNMF<a class="headerlink" href="#module-screg2" title="Link to this heading">¶</a></h1>
+<span id="regnmf"></span><h1>RegNMF<a class="headerlink" href="#module-screg2" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="screg2.RegNMF">
-<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rna_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atac_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutperc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_added</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scReg_reduction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rna'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TFIDF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rna_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atac_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutperc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_added</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scReg_reduction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rna'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TFIDF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF" title="Link to this definition"></a></dt>
 <dd><p>Perform Coupled Non-negative Matrix Factorization (NMF) on RNA and ATAC data.</p>
 <section id="parameters">
-<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>rna_data<span class="classifier">AnnData</span></dt><dd><p>Annotated data for RNA.</p>
 </dd>
@@ -61,7 +109,7 @@
 </dl>
 </section>
 <section id="returns">
-<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>AnnData</dt><dd><p>Annotated data with NMF results added.</p>
 </dd>
@@ -71,10 +119,10 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="screg2.RegNMF_Matrix">
-<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF_Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutperc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TFIDF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF_Matrix" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF_Matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">O</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Meta_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_cutperc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TFIDF</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF_Matrix" title="Link to this definition"></a></dt>
 <dd><p>Perform Coupled Non-negative Matrix Factorization (NMF) on input matrices.</p>
 <section id="id1">
-<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>E<span class="classifier">csr_matrix</span></dt><dd><p>Sparse matrix for RNA data.</p>
 </dd>
@@ -93,7 +141,7 @@
 </dl>
 </section>
 <section id="id2">
-<h2>Returns:<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<h2>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>dict</dt><dd><p>Dictionary containing NMF results.</p>
 </dd>
@@ -103,10 +151,10 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="screg2.RegNMF_h5">
-<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF_h5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF_h5" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">RegNMF_h5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">barcodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.RegNMF_h5" title="Link to this definition"></a></dt>
 <dd><p>Perform Coupled Non-negative Matrix Factorization (NMF) on RNA and ATAC data from h5 file.</p>
 <section id="id3">
-<h2>Parameters:<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<h2>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>h5_file<span class="classifier">str</span></dt><dd><p>Single cell multiome h5 file</p>
 </dd>
@@ -115,7 +163,7 @@
 </dl>
 </section>
 <section id="id4">
-<h2>Returns:<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<h2>Returns:<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>AnnData</dt><dd><p>Annotated data with NMF results added and normalized layer.</p>
 </dd>
@@ -125,7 +173,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="screg2.tfidf">
-<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">tfidf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.tfidf" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">screg2.</span></span><span class="sig-name descname"><span class="pre">tfidf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#screg2.tfidf" title="Link to this definition"></a></dt>
 <dd><p>Compute tfidf for matrix X (cell X gene)
 <a class="reference external" href="https://github.com/stuart-lab/signac/blob/HEAD/R/preprocessing.R">https://github.com/stuart-lab/signac/blob/HEAD/R/preprocessing.R</a></p>
 </dd></dl>
@@ -133,80 +181,33 @@
 </section>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api_reference.html" class="btn btn-neutral float-left" title="test" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, cham.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">screg2</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference.html">test</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">RegNMF</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF"><code class="docutils literal notranslate"><span class="pre">RegNMF()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF_Matrix"><code class="docutils literal notranslate"><span class="pre">RegNMF_Matrix()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#screg2.RegNMF_h5"><code class="docutils literal notranslate"><span class="pre">RegNMF_h5()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#screg2.tfidf"><code class="docutils literal notranslate"><span class="pre">tfidf()</span></code></a></li>
-</ul>
-</li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="api_reference.html" title="previous chapter">test</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2024, cham.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.2.6</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="_sources/function.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>
