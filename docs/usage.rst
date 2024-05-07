@@ -80,6 +80,7 @@ Create RNA and ATAC Anndata object
   rna_adata= adata[:,adata.var['feature_types']=='Gene Expression']
   atac_adata = adata[:,toyData.var['feature_types']=='Peaks']
   atac_adata = 
+
 .. code-block:: python
 
   import pandas as pd
