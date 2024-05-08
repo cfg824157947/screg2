@@ -20,3 +20,6 @@ anndata = "^0.10.6"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+docs = ["sphinx", "sphinx_rtd_theme"]
